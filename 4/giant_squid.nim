@@ -13,7 +13,6 @@ type
   Coord = object
     x, y: int
   Board = object
-    # nums: array[5, array[5, int]]
     nums: Table[int, Coord]
     marked: array[5, array[5, bool]]
     unmarked: HashSet[Coord]
@@ -31,17 +30,6 @@ proc `[]=`(arr: var array[5, array[5, bool]], k: Coord, v: bool) =
 proc `[]`(arr: array[5, array[5, bool]], k: Coord): bool =
   arr[k.y][k.x]
 
-# proc `$`(b: Board): string =
-#   for y in 0..4:
-#     for x in 0..4:
-#       if b.marked[y][x]:
-#         result &= "*"
-#       else:
-#         result &= " "
-#       result &= align($b.nums[y][x], 3)
-#     result &= "\n"
-#   result
-#
 proc toCoord(p: seq[int]): Coord =
   result.x = p[0]
   result.y = p[1]
@@ -54,7 +42,6 @@ proc mark(b: var Board, n: int) =
   if b.nums.hasKey(n):
     b.marked[b.nums[n]] = true
     b.unmarked.excl(b.nums[n])
-    # echo b.unmarked
 
 let rowsAndCols = @[
   [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0]],
