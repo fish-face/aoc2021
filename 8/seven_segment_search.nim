@@ -6,8 +6,6 @@ import strutils
 import sugar
 import tables
 
-import npeg
-
 type
   Line = object
     inputs: seq[string]
@@ -29,18 +27,6 @@ proc takeOne[T](s: set[T]): T =
 proc partOne(): int =
   setup.lines.mapIt(countUniquelyIdentifiable(it[])).foldl(a + b)
 
-const NORMAL_SEGMENT_MAPPING = [
-  {'A', 'B', 'C',      'E', 'F', 'G'},
-  {          'C',           'F'     },
-  {'A',      'C', 'D', 'E',      'G'},
-  {'A',      'C', 'D',      'F', 'G'},
-  {     'B', 'C', 'D',      'F'     },
-  {'A', 'B',      'D',      'F', 'G'},
-  {'A', 'B',      'D', 'E', 'F', 'G'},
-  {'A',      'C',           'F'     },
-  {'A', 'B', 'C', 'D', 'E', 'F', 'G'},
-  {'A', 'B', 'C', 'D',      'F', 'G'},
-]
 const INITIAL_POSSIBLE_MAPPING: array['a'..'g', set[char]] = [
   {'A'..'G'},
   {'A'..'G'},
@@ -50,14 +36,7 @@ const INITIAL_POSSIBLE_MAPPING: array['a'..'g', set[char]] = [
   {'A'..'G'},
   {'A'..'G'},
 ]
-const POSSIBLE_VALUES = {
-  2: {1},
-  3: {7},
-  4: {4},
-  5: {2, 3, 5},
-  6: {0, 6, 9},
-  7: {8},
-}.toTable
+
 const SEGMENTS_TO_NUMBERS = {
   "ABCEFG".toSet: '0',
   "CF".toSet: '1',
@@ -112,22 +91,14 @@ proc partTwo(): int =
     let segment_map = solve(line[])
     result += line.outputs.map(o => value(segment_map, o)).join.parseInt
 
-let input = paramStr(1).readFile()
+let input = paramStr(1).readFile.strip
 
-let parser = peg("input", setup: Setup):
-  input <- line * *line
-  line <- (inputseg * " ")[10] * "|" * (" " * outputseg)[4] * "\n":
-    setup.lines.add(new(Line))
-    setup.cur = setup.lines[^1]
-  inputseg <- >(Lower[2..7]):
-    setup.cur.inputs.add($1)
-  outputseg <- >(Lower[2..7]):
-    setup.cur.outputs.add($1)
-
-setup.lines.add(new(Line))
-setup.cur = setup.lines[0]
-assert parser.match(input, setup).ok
-setup.lines.del(setup.lines.len - 1)
+for row in input.splitLines:
+  var line = new(Line)
+  let io = row.split(" | ")
+  setup.lines.add(line)
+  line.inputs = io[0].split()
+  line.outputs = io[1].split()
 
 echo partOne()
 echo partTwo()
