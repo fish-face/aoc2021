@@ -74,19 +74,14 @@ const SEGMENTS_TO_NUMBERS = {
 proc solve(line: Line): auto =
   let patterns = sorted(line.inputs, (a, b) => len(a) - len(b))
   var segment_map = INITIAL_POSSIBLE_MAPPING
-  for pattern in patterns:
-    let segments = POSSIBLE_VALUES[len pattern].mapIt(NORMAL_SEGMENT_MAPPING[it]).foldl(a + b)
-    for c in pattern:
-      segment_map[c] = segment_map[c] * segments
   # work out segments of 1
   let ones = patterns[0].toSet()
   for pattern in patterns[6..8]:
     let one_and_pattern = ones * pattern.toSet
     if card(one_and_pattern) == 1:
-      for cF in one_and_pattern:
-        segment_map[cF] = {'F'}
-        for cC in ones - one_and_pattern:
-          segment_map[cC] = {'C'}
+      let F = one_and_pattern.takeOne
+      segment_map[F] = {'F'}
+      segment_map[(ones - {F}).takeOne] = {'C'}
   # work out remaining segments of 7
   for cA in patterns[1].toSet - ones:
     segment_map[cA] = {'A'}
@@ -95,19 +90,17 @@ proc solve(line: Line): auto =
   for pattern in patterns[6..8]:
     let four_and_pattern = fours * pattern.toSet
     if card(four_and_pattern) == 1:
-      for cB in four_and_pattern:
-        segment_map[cB] = {'B'}
-        for cD in fours - four_and_pattern:
-          segment_map[cD] = {'D'}
+      let B = four_and_pattern.takeOne
+      segment_map[B] = {'B'}
+      segment_map[(fours - {B}).takeOne] = {'D'}
   # remaining segments of 8 which covers all segments
   let eights = patterns[9].toSet - fours - patterns[1].toSet
   for pattern in patterns[6..8]:
     let remaining = eights * pattern.toSet
     if card(remaining) == 1:
-      for cG in remaining:
-        segment_map[cG] = {'G'}
-        for cE in eights - remaining:
-          segment_map[cE] = {'E'}
+      let G = remaining.takeOne
+      segment_map[G] = {'G'}
+      segment_map[(eights - {G}).takeOne] = {'E'}
 
   return segment_map
 
