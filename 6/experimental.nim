@@ -2,6 +2,9 @@ import os
 import sequtils
 import strutils
 import sugar
+import math
+
+import arraymancer
 
 proc `+=`(a: var openArray[int], b: openArray[int]) =
   for i, bx in b:
@@ -42,5 +45,31 @@ proc solve(fish: array[9, int], days: int): int =
 
   locFish.foldl(a+b)
 
-echo solve(fish, 80)
-echo solve(fish, 256)
+proc squareMod(M: Tensor[int], b: int): Tensor[int] =
+  result = M.square()
+  result.apply(x => x mod b)
+
+proc powMod(M: Tensor[int], p: int, b: int): Tensor[int] =
+  while
+
+proc solveBetter(fish: array[9, int], days: int): int =
+  # var sumMap = array[9, array[9, int]]
+  var sumMap = [
+    [0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0],
+  ].toTensor().astype(float)
+  var x = fish.toTensor().astype(float)
+
+  # echo pow(sumMap, days)
+  int sum ((sumMap ^. float days) * x)
+
+# echo solve(fish, 80)
+# echo solve(fish, 256)
+echo solveBetter(fish, 256)
