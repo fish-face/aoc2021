@@ -3,6 +3,7 @@
 !*/
 !input
 !answer
+!Dockerfile
 
 .*.sw[pno]
 .idea
