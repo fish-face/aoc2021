@@ -98,7 +98,9 @@ let parser = peg("input", setup: Setup):
 
 var setup = Setup(nums: @[], boards: @[], cur: Coord(x: 0, y: 0))
 setup.boards.add(Board())
-assert parser.match(input, setup).ok
+if not parser.match(input, setup).ok:
+  echo "Parse error"
+  quit(1)
 
 proc partOne(): int =
   for n in setup.nums:
