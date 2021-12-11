@@ -22,7 +22,7 @@ proc both() =
   var scores: seq[int] = @[]
   for line in input:
     var stack: seq[char] = @[]
-    var incomplete = false
+    var incomplete = true
     for c in line:
       case c:
         of '(': stack.add(')')
@@ -32,7 +32,7 @@ proc both() =
         of ')', '}', ']', '>':
           if c != stack.pop:
             partOne += SCORES[c]
-            incomplete = true
+            incomplete = false
             break
         else:
           break
