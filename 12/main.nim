@@ -29,6 +29,8 @@ for i, l in labels:
 for line in input:
   let
     connection = line.split("-")
+    # a = connection[0]
+    # b = connection[1]
     a = labelMapping[connection[0]]
     b = labelMapping[connection[1]]
 
@@ -36,28 +38,25 @@ for line in input:
     connections[a] = @[]
   if b notin connections:
     connections[b] = @[]
-  connections[a].add(b)
-  connections[b].add(a)
+  if b != 0:
+    # don't add connections back to start
+    connections[a].add(b)
+  if a != 0:
+    connections[b].add(a)
 
-proc traverse(cur: int, history: seq[int], visited: HashSet[int], tried: var HashSet[seq[int]], mayReVisitSmall: bool): seq[seq[int]] =
+echo connections
+
+proc traverse(cur: int, visited: HashSet[int], tried: var HashSet[seq[int]], mayReVisitSmall: bool): int =
   for conn in connections[cur]:
-    let next = history & conn
-    # 0 == "start"
-    if conn == 0:
-      continue
-    # O(n) search through history
     if not mayReVisitSmall and conn.isSmall and conn in visited:
       continue
-    if next in tried:
-      continue
-    tried.incl(next)
-    # 1 == "end"
+    # 1 == end
     if conn == 1:
-      result &= next
+      result += 1
     else:
-      result &= traverse(conn, next, visited + [conn].toHashSet, tried, mayReVisitSmall and (not conn.isSmall or conn notin visited))
+      result += traverse(conn, visited + [conn].toHashSet, tried, mayReVisitSmall and (not conn.isSmall or conn notin visited))
 
 var tried = HashSet[seq[int]]()
-echo len traverse(0, @[0], HashSet[int](), tried, false)
+echo traverse(0, HashSet[int](), tried, false)
 tried = HashSet[seq[int]]()
-echo len traverse(0, @[0], HashSet[int](), tried, true)
+echo traverse(0, HashSet[int](), tried, true)
