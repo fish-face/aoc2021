@@ -31,8 +31,6 @@ for i, l in labels:
 for line in input:
   let
     connection = line.split("-")
-    # a = connection[0]
-    # b = connection[1]
     a = labelMapping[connection[0]]
     b = labelMapping[connection[1]]
 
