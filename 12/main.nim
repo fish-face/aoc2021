@@ -44,8 +44,6 @@ for line in input:
   if a != 0'i8:
     connections[b].add(a)
 
-echo connections
-
 proc traverse(cur: int8, visited: set[int8], mayReVisitSmall: bool): int {.memoized.} =
   for conn in connections[cur]:
     # 1 == end
