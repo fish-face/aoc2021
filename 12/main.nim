@@ -51,6 +51,8 @@ proc traverse(cur: int8, visited: set[int8], mayReVisitSmall: bool): int {.memoi
       continue
     if conn == 1'i8:
       result += 1
+    elif not conn.isSmall:
+      result += traverse(conn, visited         , mayReVisitSmall and (not conn.isSmall or conn notin visited))
     else:
       result += traverse(conn, visited + {conn}, mayReVisitSmall and (not conn.isSmall or conn notin visited))
 
