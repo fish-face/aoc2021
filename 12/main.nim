@@ -8,9 +8,9 @@ import memo
 
 var
   input = paramStr(1).readFile.strip.splitLines
-  connections = newTable[int, seq[int]]()
+  connections = newTable[int8, seq[int8]]()
   labels = input.map(l => l.split("-")).foldl(a & b).toOrderedSet
-  labelMapping = {"start": 0, "end": 1}.toTable
+  labelMapping = {"start": 0'i8, "end": 1'i8}.toTable
 
 func isSmall(conn: string): bool =
   result = true
@@ -18,15 +18,15 @@ func isSmall(conn: string): bool =
     if c.isUpperAscii:
       return false
 
-func isSmall(conn: int): bool {.inline.} =
+func isSmall(conn: int8): bool {.inline.} =
   conn > 0
 
 for i, l in labels:
   if l != "start" and l != "end":
     if l.isSmall:
-      labelMapping[l] = i+2
+      labelMapping[l] = int8(i+2)
     else:
-      labelMapping[l] = -(i+2)
+      labelMapping[l] = int8(-(i+2))
 
 for line in input:
   let
@@ -40,23 +40,23 @@ for line in input:
     connections[a] = @[]
   if b notin connections:
     connections[b] = @[]
-  if b != 0:
+  if b != 0'i8:
     # don't add connections back to start
     connections[a].add(b)
-  if a != 0:
+  if a != 0'i8:
     connections[b].add(a)
 
 echo connections
 
-proc traverse(cur: int, visited: HashSet[int], mayReVisitSmall: bool): int {.memoized.} =
+proc traverse(cur: int8, visited: set[int8], mayReVisitSmall: bool): int {.memoized.} =
   for conn in connections[cur]:
     # 1 == end
     if not mayReVisitSmall and conn.isSmall and conn in visited:
       continue
-    if conn == 1:
+    if conn == 1'i8:
       result += 1
     else:
-      result += traverse(conn, visited + [conn].toHashSet, mayReVisitSmall and (not conn.isSmall or conn notin visited))
+      result += traverse(conn, visited + {conn}, mayReVisitSmall and (not conn.isSmall or conn notin visited))
 
-echo traverse(0, HashSet[int](), false)
-echo traverse(0, HashSet[int](), true)
+echo traverse(0'i8, {}, false)
+echo traverse(0'i8, {}, true)
