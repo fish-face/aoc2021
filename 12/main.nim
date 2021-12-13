@@ -4,6 +4,8 @@ import sugar
 import math
 import sets
 
+import memo
+
 var
   input = paramStr(1).readFile.strip.splitLines
   connections = newTable[int, seq[int]]()
@@ -46,17 +48,15 @@ for line in input:
 
 echo connections
 
-proc traverse(cur: int, visited: HashSet[int], tried: var HashSet[seq[int]], mayReVisitSmall: bool): int =
+proc traverse(cur: int, visited: HashSet[int], mayReVisitSmall: bool): int {.memoized.} =
   for conn in connections[cur]:
+    # 1 == end
     if not mayReVisitSmall and conn.isSmall and conn in visited:
       continue
-    # 1 == end
     if conn == 1:
       result += 1
     else:
-      result += traverse(conn, visited + [conn].toHashSet, tried, mayReVisitSmall and (not conn.isSmall or conn notin visited))
+      result += traverse(conn, visited + [conn].toHashSet, mayReVisitSmall and (not conn.isSmall or conn notin visited))
 
-var tried = HashSet[seq[int]]()
-echo traverse(0, HashSet[int](), tried, false)
-tried = HashSet[seq[int]]()
-echo traverse(0, HashSet[int](), tried, true)
+echo traverse(0, HashSet[int](), false)
+echo traverse(0, HashSet[int](), true)
