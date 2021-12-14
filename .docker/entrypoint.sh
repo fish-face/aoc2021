@@ -6,5 +6,5 @@ if [[ -d "$1" ]]; then
   if [ main -ot main.nim ]; then
     nim c -d:danger --passC:-flto main.nim
   fi
-  time main input
+  time ./main input
 fi
