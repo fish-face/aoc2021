@@ -2,8 +2,11 @@ include prelude
 
 import strscans
 
+import itertools
+
 type
   UpperCounts = array['A'..'Z', int]
+  Pair = (char, char)
 
 proc countChars(s: string, counts: var UpperCounts) =
   for c in s:
@@ -40,17 +43,26 @@ proc expand(input: string, rules: Table[string, char], depth: int, memo: var Tab
   counts += newCount
   memo.mGetOrPut(input, Table[int, UpperCounts]())[depth] = newCount
 
+proc expandCounts(counts: CountTable[Pair], rules: Table[Pair, char]): CountTable[Pair] =
+  for pair, n in counts:
+    let (left, right) = pair
+    if (var insert = rules.getOrDefault(pair); insert) != '\0':
+      result.inc((left, insert), n)
+      result.inc((insert, right), n)
+
 let input = paramStr(1).readFile.strip.splitLines
 var
   initial = input[0]
   success: bool
   left, right, insert: char
   rules = Table[string, char]()
+  rules2 = Table[Pair, char]()
   memo = Table[string, Table[int, UpperCounts]]()
 
 for line in input[2..^1]:
   (success, left, right, insert) = scanTuple(line, "$c$c -> $c")
   rules[left & right] = insert
+  rules2[(left, right)] = insert
 
 proc partOne(): int =
   var counts: UpperCounts
@@ -64,5 +76,16 @@ proc partTwo(): int =
   expand(initial, rules, 40, memo, counts)
   counts.max - counts.min
 
-echo partOne()
-echo partTwo()
+# echo partOne()
+# echo partTwo()
+
+var counts = initial.windowed(2).toSeq.mapIt((it[0], it[1])).toCountTable
+for i in 0..<40:
+  counts = expandCounts(counts, rules2)
+  var finalCounts = CountTable[char]()
+  finalCounts.inc(initial[0])
+  if i == 9 or i == 39:
+    for pair, n in counts:
+      let (left, right) = pair
+      finalCounts.inc(right, n)
+    echo(finalCounts.largest.val - finalCounts.smallest.val)
