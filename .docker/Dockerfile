@@ -1,6 +1,6 @@
 FROM nimlang/nim
 
-RUN nimble -y install arraymancer npeg memo
+RUN nimble -y install arraymancer npeg memo itertools
 
 ADD entrypoint.sh /entrypoint.sh
 
