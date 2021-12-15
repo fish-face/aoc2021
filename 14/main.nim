@@ -22,6 +22,8 @@ proc min(a: UpperCounts): int =
     if v > 0 and v < result:
       result = v
 
+###
+
 proc expand(input: string, rules: Table[string, char], depth: int, memo: var Table[string, Table[int, UpperCounts]], counts: var UpperCounts) =
   if depth == 0:
     countChars(input[1..^1], counts)
