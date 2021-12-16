@@ -6,17 +6,16 @@ import math
 
 import itertools
 
-const chunkSize = 32
+const chunkSize = 64
 const charsPerChunk = chunkSize div 4
 
-proc bits(num: seq[int], bits: uint, i: var uint): uint =
-  assert bits < 64
+proc bits(num: seq[uint], bits: uint, i: var uint): uint =
+  assert bits <= 64
   var done = bits
   var start = i mod chunkSize
   for nybble in num[i div chunkSize..^1]:
     var mask = 1 shl (chunkSize - 1)
     for bitidx in start..<chunkSize:
-      # echo fmt"byte {bitidx} {nybble:032b} = {nybble.testBit(31-bitidx).int}"
       result += nybble.testBit(chunkSize-1-bitidx).uint shl (done - 1)
       dec done
       inc i
@@ -32,7 +31,7 @@ type
     versionsum: uint
     children: seq[Packet]
 
-proc parsePacket(num: seq[int], start: var uint): Packet =
+proc parsePacket(num: seq[uint], start: var uint): Packet =
   result.version = bits(num, 3'u, start)
   result.typeid = bits(num, 3'u, start)
   result.versionsum = result.version
@@ -80,7 +79,7 @@ proc parsePacket(num: seq[int], start: var uint): Packet =
 let raw = paramStr(1).readFile.strip
 let extraChars = charsPerChunk - (raw.len mod charsPerChunk)
 let prep = raw.align(raw.len + extraChars, '0')
-let input = prep.chunked(charsPerChunk).toSeq.map(x => x.join("").parseHexInt)
+let input = prep.chunked(charsPerChunk).toSeq.map(x => x.join("").parseHexInt.uint)
 
 var start = uint(extraChars * 4)
 let packet = parsePacket(input, start)
