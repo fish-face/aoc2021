@@ -11,13 +11,13 @@ type
   # 2D Coordinate with extra priority field. Faster than a tuple for some reason.
   PriorityCoord = object
     x, y: int
-    priority: float
+    priority: int
   # A look up table for a square grid
   LUT = object
-    entries: seq[float]
+    entries: seq[int]
     w, h: int
 
-proc withPriority(c: Coord, p: float): PriorityCoord =
+proc withPriority(c: Coord, p: int): PriorityCoord =
   result.x = c.x
   result.y = c.y
   result.priority = p
@@ -29,26 +29,26 @@ proc stripPriority(c: PriorityCoord): Coord =
 proc `<`(a, b: PriorityCoord): bool =
   return a.priority < b.priority
 
-func d(a, b: Coord): float =
-  # Euclidean distance
-  sqrt(float(a.x - b.x)^2 + float(a.y - b.y)^2)
+func d(a, b: Coord): int {.inline.} =
+  # Manhattan distance
+  abs(a.x - b.x) + abs(a.y - b.y)
 
 func `[]`(g: seq[seq[int]], c: Coord): int =
   g[c.y][c.x]
 
-func `[]`(table: LUT, c: Coord): float =
+func `[]`(table: LUT, c: Coord): int =
   table.entries[c.y * table.w + c.x]
 
-func `[]=`(table: var LUT, c: Coord, val: float) =
+func `[]=`(table: var LUT, c: Coord, val: int) =
   table.entries[c.y * table.w + c.x] = val
 
-func toLUT(init: openArray[(Coord, float)], w, h: int): LUT =
+func toLUT(init: openArray[(Coord, int)], w, h: int): LUT =
   # Initialise lookup table with infinity values except for the supplied initial values
   result.w = w
-  result.entries = newSeq[float](w * h)
+  result.entries = newSeq[int](w * h)
   for y in 0..<h:
     for x in 0..<w:
-      result.entries[y*w + x] = Inf
+      result.entries[y*w + x] = 999999999
   for (c, v) in init:
     result[c] = v
 
@@ -62,13 +62,13 @@ iterator neighboursOf(c: Coord, w, h: int): Coord =
     if x >= 0 and y >= 0 and x < w and y < h:
       yield Coord(x: x, y: y)
 
-proc astar(start: Coord, goal: Coord, grid: seq[seq[int]]): float =
+proc astar(start: Coord, goal: Coord, grid: seq[seq[int]]): int =
   let
     w = grid[0].len
     h = grid.len
   var
     openSet = [start.withPriority(0)].toHeapQueue
-    scoreMap = {start: 0.0}.toLUT(w, h)
+    scoreMap = {start: 0}.toLUT(w, h)
 
   # We know the task is solvable so don't worry about running out of nodes
   while true:
@@ -76,10 +76,12 @@ proc astar(start: Coord, goal: Coord, grid: seq[seq[int]]): float =
     if current == goal:
       return scoreMap[goal]
     for neighbour in neighboursOf(current, w, h):
-      let tentativeScore = scoreMap[current] + grid[neighbour].float
+      let tentativeScore = scoreMap[current] + grid[neighbour]
       if tentativeScore < scoreMap[neighbour]:
         scoreMap[neighbour] = tentativeScore
-        openSet.push(neighbour.withPriority(tentativeScore + d(neighbour, goal)))
+        # uncomment to use heuristic
+        # openSet.push(neighbour.withPriority(tentativeScore + d(neighbour, goal)))
+        openSet.push(neighbour.withPriority(tentativeScore))
 
 let
   grid = paramStr(1).readFile.strip.splitLines.mapIt(it.map(c => ($c).parseInt))
