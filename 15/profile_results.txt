@@ -1,0 +1,493 @@
+total executions of each stack trace:
+Entry: 1/87 Calls: 249/3345 = 7.44% [sum: 249; 249/3345 = 7.44%]
+  heapqueue.nim: [] 327/3345 = 9.78%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 2/87 Calls: 204/3345 = 6.10% [sum: 453; 453/3345 = 13.54%]
+  main.nim: + 204/3345 = 6.10%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 3/87 Calls: 168/3345 = 5.02% [sum: 621; 621/3345 = 18.57%]
+  hashes.nim: hiXorLo 409/3345 = 12.23%
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 4/87 Calls: 165/3345 = 4.93% [sum: 786; 786/3345 = 23.50%]
+  hashes.nim: hiXorLo 409/3345 = 12.23%
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 5/87 Calls: 96/3345 = 2.87% [sum: 882; 882/3345 = 26.37%]
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 6/87 Calls: 93/3345 = 2.78% [sum: 975; 975/3345 = 29.15%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 7/87 Calls: 93/3345 = 2.78% [sum: 1068; 1068/3345 = 31.93%]
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 8/87 Calls: 92/3345 = 2.75% [sum: 1160; 1160/3345 = 34.68%]
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 9/87 Calls: 86/3345 = 2.57% [sum: 1246; 1246/3345 = 37.25%]
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 10/87 Calls: 81/3345 = 2.42% [sum: 1327; 1327/3345 = 39.67%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 11/87 Calls: 79/3345 = 2.36% [sum: 1406; 1406/3345 = 42.03%]
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 12/87 Calls: 78/3345 = 2.33% [sum: 1484; 1484/3345 = 44.36%]
+  hashes.nim: !& 191/3345 = 5.71%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 13/87 Calls: 77/3345 = 2.30% [sum: 1561; 1561/3345 = 46.67%]
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 14/87 Calls: 76/3345 = 2.27% [sum: 1637; 1637/3345 = 48.94%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 15/87 Calls: 75/3345 = 2.24% [sum: 1712; 1712/3345 = 51.18%]
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 16/87 Calls: 74/3345 = 2.21% [sum: 1786; 1786/3345 = 53.39%]
+  main.nim: < 96/3345 = 2.87%
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 17/87 Calls: 73/3345 = 2.18% [sum: 1859; 1859/3345 = 55.58%]
+  hashes.nim: !& 191/3345 = 5.71%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 18/87 Calls: 72/3345 = 2.15% [sum: 1931; 1931/3345 = 57.73%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 19/87 Calls: 62/3345 = 1.85% [sum: 1993; 1993/3345 = 59.58%]
+  hashcommon.nim: nextTry 154/3345 = 4.60%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 20/87 Calls: 60/3345 = 1.79% [sum: 2053; 2053/3345 = 61.38%]
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 21/87 Calls: 54/3345 = 1.61% [sum: 2107; 2107/3345 = 62.99%]
+  hashcommon.nim: nextTry 154/3345 = 4.60%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 22/87 Calls: 54/3345 = 1.61% [sum: 2161; 2161/3345 = 64.60%]
+  system.nim: pop 672/3345 = 20.09%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 23/87 Calls: 49/3345 = 1.46% [sum: 2210; 2210/3345 = 66.07%]
+  hashes.nim: !$ 106/3345 = 3.17%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 24/87 Calls: 46/3345 = 1.38% [sum: 2256; 2256/3345 = 67.44%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 25/87 Calls: 42/3345 = 1.26% [sum: 2298; 2298/3345 = 68.70%]
+  tables.nim: enlarge 188/3345 = 5.62%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 26/87 Calls: 42/3345 = 1.26% [sum: 2340; 2340/3345 = 69.96%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 27/87 Calls: 41/3345 = 1.23% [sum: 2381; 2381/3345 = 71.18%]
+  hashes.nim: hiXorLo 409/3345 = 12.23%
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 28/87 Calls: 40/3345 = 1.20% [sum: 2421; 2421/3345 = 72.38%]
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 29/87 Calls: 39/3345 = 1.17% [sum: 2460; 2460/3345 = 73.54%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  tables.nim: enlarge 188/3345 = 5.62%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 30/87 Calls: 37/3345 = 1.11% [sum: 2497; 2497/3345 = 74.65%]
+  hashes.nim: !$ 106/3345 = 3.17%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 31/87 Calls: 35/3345 = 1.05% [sum: 2532; 2532/3345 = 75.70%]
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 32/87 Calls: 35/3345 = 1.05% [sum: 2567; 2567/3345 = 76.74%]
+  hashes.nim: hiXorLo 409/3345 = 12.23%
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 33/87 Calls: 33/3345 = 0.99% [sum: 2600; 2600/3345 = 77.73%]
+  main.nim: stripPriority 33/3345 = 0.99%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 34/87 Calls: 32/3345 = 0.96% [sum: 2632; 2632/3345 = 78.68%]
+  system.nim: == 55/3345 = 1.64%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: getOrDefault 784/3345 = 23.44%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 35/87 Calls: 28/3345 = 0.84% [sum: 2660; 2660/3345 = 79.52%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 36/87 Calls: 28/3345 = 0.84% [sum: 2688; 2688/3345 = 80.36%]
+  main.nim: withPriority 28/3345 = 0.84%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 37/87 Calls: 27/3345 = 0.81% [sum: 2715; 2715/3345 = 81.17%]
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 38/87 Calls: 25/3345 = 0.75% [sum: 2740; 2740/3345 = 81.91%]
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 39/87 Calls: 24/3345 = 0.72% [sum: 2764; 2764/3345 = 82.63%]
+  heapqueue.nim: [] 327/3345 = 9.78%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 40/87 Calls: 23/3345 = 0.69% [sum: 2787; 2787/3345 = 83.32%]
+  hashes.nim: hashWangYi1 632/3345 = 18.89%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 41/87 Calls: 23/3345 = 0.69% [sum: 2810; 2810/3345 = 84.01%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 42/87 Calls: 23/3345 = 0.69% [sum: 2833; 2833/3345 = 84.69%]
+  hashes.nim: !& 191/3345 = 5.71%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 43/87 Calls: 22/3345 = 0.66% [sum: 2855; 2855/3345 = 85.35%]
+  heapqueue.nim: [] 327/3345 = 9.78%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 44/87 Calls: 21/3345 = 0.63% [sum: 2876; 2876/3345 = 85.98%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 45/87 Calls: 20/3345 = 0.60% [sum: 2896; 2896/3345 = 86.58%]
+  hashcommon.nim: rawGetKnownHC 43/3345 = 1.29%
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 46/87 Calls: 20/3345 = 0.60% [sum: 2916; 2916/3345 = 87.17%]
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 47/87 Calls: 20/3345 = 0.60% [sum: 2936; 2936/3345 = 87.77%]
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 48/87 Calls: 19/3345 = 0.57% [sum: 2955; 2955/3345 = 88.34%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 49/87 Calls: 18/3345 = 0.54% [sum: 2973; 2973/3345 = 88.88%]
+  heapqueue.nim: [] 327/3345 = 9.78%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 50/87 Calls: 17/3345 = 0.51% [sum: 2990; 2990/3345 = 89.39%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  hashcommon.nim: rawGetKnownHC 43/3345 = 1.29%
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 51/87 Calls: 17/3345 = 0.51% [sum: 3007; 3007/3345 = 89.90%]
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 52/87 Calls: 17/3345 = 0.51% [sum: 3024; 3024/3345 = 90.40%]
+  hashes.nim: !& 191/3345 = 5.71%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 53/87 Calls: 17/3345 = 0.51% [sum: 3041; 3041/3345 = 90.91%]
+  hashcommon.nim: isFilled 298/3345 = 8.91%
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 54/87 Calls: 16/3345 = 0.48% [sum: 3057; 3057/3345 = 91.39%]
+  hashcommon.nim: nextTry 154/3345 = 4.60%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 55/87 Calls: 16/3345 = 0.48% [sum: 3073; 3073/3345 = 91.87%]
+  setimpl.nim: rawInsert 42/3345 = 1.26%
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 56/87 Calls: 16/3345 = 0.48% [sum: 3089; 3089/3345 = 92.35%]
+  system.nim: == 55/3345 = 1.64%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: contains 813/3345 = 24.30%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 57/87 Calls: 15/3345 = 0.45% [sum: 3104; 3104/3345 = 92.80%]
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 58/87 Calls: 15/3345 = 0.45% [sum: 3119; 3119/3345 = 93.24%]
+  hashcommon.nim: nextTry 154/3345 = 4.60%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 59/87 Calls: 15/3345 = 0.45% [sum: 3134; 3134/3345 = 93.69%]
+  math.nim: ^ 15/3345 = 0.45%
+  main.nim: d 21/3345 = 0.63%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 60/87 Calls: 14/3345 = 0.42% [sum: 3148; 3148/3345 = 94.11%]
+  hashes.nim: !$ 106/3345 = 3.17%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 61/87 Calls: 14/3345 = 0.42% [sum: 3162; 3162/3345 = 94.53%]
+  main.nim: [] 327/3345 = 9.78%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 62/87 Calls: 11/3345 = 0.33% [sum: 3173; 3173/3345 = 94.86%]
+  main.nim: < 96/3345 = 2.87%
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 63/87 Calls: 11/3345 = 0.33% [sum: 3184; 3184/3345 = 95.19%]
+  setimpl.nim: rawInsert 42/3345 = 1.26%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 64/87 Calls: 11/3345 = 0.33% [sum: 3195; 3195/3345 = 95.52%]
+  hashcommon.nim: mustRehash 22/3345 = 0.66%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 65/87 Calls: 11/3345 = 0.33% [sum: 3206; 3206/3345 = 95.84%]
+  hashcommon.nim: mustRehash 22/3345 = 0.66%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 66/87 Calls: 11/3345 = 0.33% [sum: 3217; 3217/3345 = 96.17%]
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 67/87 Calls: 11/3345 = 0.33% [sum: 3228; 3228/3345 = 96.50%]
+  main.nim: < 96/3345 = 2.87%
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 68/87 Calls: 10/3345 = 0.30% [sum: 3238; 3238/3345 = 96.80%]
+  tableimpl.nim: rawInsert 42/3345 = 1.26%
+  tables.nim: enlarge 188/3345 = 5.62%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 69/87 Calls: 10/3345 = 0.30% [sum: 3248; 3248/3345 = 97.10%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 70/87 Calls: 9/3345 = 0.27% [sum: 3257; 3257/3345 = 97.37%]
+  heapqueue.nim: len 27/3345 = 0.81%
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 71/87 Calls: 9/3345 = 0.27% [sum: 3266; 3266/3345 = 97.64%]
+  heapqueue.nim: len 27/3345 = 0.81%
+  heapqueue.nim: siftdownToBottom 561/3345 = 16.77%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 72/87 Calls: 9/3345 = 0.27% [sum: 3275; 3275/3345 = 97.91%]
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 73/87 Calls: 8/3345 = 0.24% [sum: 3283; 3283/3345 = 98.15%]
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 74/87 Calls: 7/3345 = 0.21% [sum: 3290; 3290/3345 = 98.36%]
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 75/87 Calls: 7/3345 = 0.21% [sum: 3297; 3297/3345 = 98.57%]
+  system.nim: == 55/3345 = 1.64%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 76/87 Calls: 6/3345 = 0.18% [sum: 3303; 3303/3345 = 98.74%]
+  heapqueue.nim: heapCmp 206/3345 = 6.16%
+  heapqueue.nim: siftup 109/3345 = 3.26%
+  heapqueue.nim: push 86/3345 = 2.57%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 77/87 Calls: 6/3345 = 0.18% [sum: 3309; 3309/3345 = 98.92%]
+  hashes.nim: !$ 106/3345 = 3.17%
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 78/87 Calls: 6/3345 = 0.18% [sum: 3315; 3315/3345 = 99.10%]
+  hashcommon.nim: nextTry 154/3345 = 4.60%
+  hashcommon.nim: rawGetKnownHC 43/3345 = 1.29%
+  setimpl.nim: enlarge 188/3345 = 5.62%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 79/87 Calls: 6/3345 = 0.18% [sum: 3321; 3321/3345 = 99.28%]
+  hashes.nim: hash 1221/3345 = 36.50%
+  hashcommon.nim: rawGet 1856/3345 = 55.49%
+  sets.nim: incl 308/3345 = 9.21%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 80/87 Calls: 6/3345 = 0.18% [sum: 3327; 3327/3345 = 99.46%]
+  main.nim: d 21/3345 = 0.63%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 81/87 Calls: 5/3345 = 0.15% [sum: 3332; 3332/3345 = 99.61%]
+  heapqueue.nim: len 27/3345 = 0.81%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 82/87 Calls: 5/3345 = 0.15% [sum: 3337; 3337/3345 = 99.76%]
+  tableimpl.nim: rawInsert 42/3345 = 1.26%
+  tables.nim: []= 292/3345 = 8.73%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%
+Entry: 83/87 Calls: 4/3345 = 0.12% [sum: 3341; 3341/3345 = 99.88%]
+  heapqueue.nim: len 27/3345 = 0.81%
+  heapqueue.nim: pop 672/3345 = 20.09%
+  main.nim: astar 3342/3345 = 99.91%
+  main.nim: main 3344/3345 = 99.97%

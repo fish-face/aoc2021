@@ -4,14 +4,18 @@ import sugar
 import math
 import heapqueue
 
-import itertools
-
 type
+  # 2D Coordinate
   Coord = object
     x, y: int
+  # 2D Coordinate with extra priority field. Faster than a tuple for some reason.
   PriorityCoord = object
     x, y: int
     priority: float
+  # A look up table for a square grid
+  LUT = object
+    entries: seq[float]
+    w, h: int
 
 proc withPriority(c: Coord, p: float): PriorityCoord =
   result.x = c.x
@@ -25,69 +29,57 @@ proc stripPriority(c: PriorityCoord): Coord =
 proc `<`(a, b: PriorityCoord): bool =
   return a.priority < b.priority
 
-proc `+`(a, b: Coord): Coord {.inline.} =
-  Coord(x: a.x+b.x, y: a.y+b.y)
-
 func d(a, b: Coord): float =
+  # Euclidean distance
   sqrt(float(a.x - b.x)^2 + float(a.y - b.y)^2)
 
 func `[]`(g: seq[seq[int]], c: Coord): int =
   g[c.y][c.x]
 
-func contains(g: seq[seq[int]], c: Coord): bool =
-  c.x >= 0 and c.y >= 0 and c.x < g[0].len and c.y < g.len
+func `[]`(table: LUT, c: Coord): float =
+  table.entries[c.y * table.w + c.x]
 
-const neighbours = [
-  Coord(x:  0, y:  1),
-  # Coord(x:  1, y:  1),
-  Coord(x:  1, y:  0),
-  # Coord(x:  1, y: -1),
-  Coord(x:  0, y: -1),
-  # Coord(x: -1, y: -1),
-  Coord(x: -1, y:  0),
-  # Coord(x: -1, y:  1),
-]
+func `[]=`(table: var LUT, c: Coord, val: float) =
+  table.entries[c.y * table.w + c.x] = val
 
-proc path(prevMap: auto, goal: Coord): seq[Coord] =
-  var prev = goal
-  while true:
-    result.add(prev)
-    try:
-      prev = prevMap[prev]
-    except KeyError:
-      break
+func toLUT(init: openArray[(Coord, float)], w, h: int): LUT =
+  # Initialise lookup table with infinity values except for the supplied initial values
+  result.w = w
+  result.entries = newSeq[float](w * h)
+  for y in 0..<h:
+    for x in 0..<w:
+      result.entries[y*w + x] = Inf
+  for (c, v) in init:
+    result[c] = v
+
+iterator neighboursOf(c: Coord, w, h: int): Coord =
+  for (x, y) in [
+    (c.x + 1, c.y + 0),
+    (c.x - 1, c.y + 0),
+    (c.x + 0, c.y + 1),
+    (c.x + 0, c.y - 1)
+  ]:
+    if x >= 0 and y >= 0 and x < w and y < h:
+      yield Coord(x: x, y: y)
 
 proc astar(start: Coord, goal: Coord, grid: seq[seq[int]]): float =
+  let
+    w = grid[0].len
+    h = grid.len
   var
-    # openSet = {start}.toHashSet
     openSet = [start.withPriority(0)].toHeapQueue
-    prevMap = Table[Coord, Coord]()
-    scoreMap = {start: 0.0}.toTable
-    priorityMap = {start: d(start, goal)}.toTable
+    scoreMap = {start: 0.0}.toLUT(w, h)
 
-  while openSet.len > 0:
+  # We know the task is solvable so don't worry about running out of nodes
+  while true:
     var current = openSet.pop.stripPriority
     if current == goal:
       return scoreMap[goal]
-      # return path(prevMap, current)
-    for n in neighbours:
-      let neighbour = current + n
-      if neighbour notin grid:
-        continue
-      let tentativeScore = scoreMap.getOrDefault(current, Inf) + grid[neighbour].float
-      if tentativeScore < scoreMap.getOrDefault(neighbour, Inf):
-        prevMap[neighbour] = current
+    for neighbour in neighboursOf(current, w, h):
+      let tentativeScore = scoreMap[current] + grid[neighbour].float
+      if tentativeScore < scoreMap[neighbour]:
         scoreMap[neighbour] = tentativeScore
-        # TODO looks sketchy
-        if neighbour in priorityMap:
-          let idx = openSet.find(neighbour.withPriority(priorityMap[neighbour]))
-          if idx != -1:
-            openSet.del(idx)
         openSet.push(neighbour.withPriority(tentativeScore + d(neighbour, goal)))
-        priorityMap[neighbour] = tentativeScore + d(neighbour, goal)
-
-  return -1.0
-
 
 let
   grid = paramStr(1).readFile.strip.splitLines.mapIt(it.map(c => ($c).parseInt))
@@ -104,5 +96,5 @@ for y in 0..<h:
         let offset = bx + by
         biggrid[y+by*h][x+bx*w] = (val + offset - 1) mod 9 + 1
 
-echo astar(Coord(x: 0, y: 0), Coord(x: w-1, y: h-1), grid)
-echo astar(Coord(x: 0, y: 0), Coord(x: w*5-1, y: h*5-1), biggrid)
+echo astar(Coord(x: 0, y: 0), Coord(x: w-1, y: h-1), grid).int
+echo astar(Coord(x: 0, y: 0), Coord(x: w*5-1, y: h*5-1), biggrid).int
