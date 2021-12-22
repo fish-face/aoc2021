@@ -11,8 +11,6 @@ type
   Scanner = ref object
     num: int
     obs: seq[Coord]
-    obsSet: HashSet[Coord]
-    orientations: seq[seq[Coord]]
     connections: seq[Connection]
     visited: bool
     position: Coord
@@ -104,15 +102,9 @@ let rotations = [
   ([2, 1, 0], [-1, -1, -1]),
 ]
 
-proc generateOrientations(s: Scanner) =
-  for (orient, flip) in rotations:
-    s.orientations.add(newSeq[Coord]())
-    for o in s.obs:
-      s.orientations[^1].add(o.rotate((orient, flip)))
-
-proc finish(s: Scanner) =
-  s.generateOrientations
-  s.obsSet = s.obs.toHashset
+iterator generateRotations(obs: seq[Coord]): tuple[r: Rotation, c: seq[Coord]] =
+  for r in rotations:
+    yield (r, obs.rotate(r))
 
 let input = paramStr(1).readFile.strip.splitLines
 
@@ -125,11 +117,8 @@ for line in input:
     continue
   let (newscanner, num) = line.scanTuple("--- scanner $i ---")
   if newscanner:
-    if scanners.len > 0:
-      scanners[^1].finish
     scanners.add(new Scanner)
     scanners[^1].num = num
-scanners[^1].finish
 
 const threshold = 12
 # every scanner with >=5 matches is a real match
@@ -140,24 +129,24 @@ for i, scannerA in scanners:
   for scannerB in scanners[i+1..^1]:
     block inner:
       for a in scannerA.obs:
-        for o, orientation in scannerB.orientations:
+        for r, rotated in scannerB.obs.generateRotations:
           # every matching scanner has at least 12 matches, any one of which can be used as the point to
           # generate the offset
-          for b in orientation[0..^threshold]:
+          for b in rotated[0..^threshold]:
             var matches = 0
             var j = 0
-            for ab in orientation.offset(a - b):
+            for ab in rotated.offset(a - b):
               # every matching scanner has at least 12 matches, so break if that's not possible with how
               # many observations are left to check
-              if orientation.len - j - 1 < (threshold - matches): break
+              if scannerB.obs.len - j - 1 < (threshold - matches): break
               inc j
               if ab in scannerA.obs:
                 inc matches
               if matches >= practicalThreshold:
                 break
             if matches >= practicalThreshold:
-              scannerB.connections.add(Connection(target: scannerA, offset: (b - a).rotate(rotations[o].inverse), rot: rotations[o]))
-              scannerA.connections.add(Connection(target: scannerB, offset: a - b, rot: rotations[o].inverse))
+              scannerB.connections.add(Connection(target: scannerA, offset: (b - a).rotate(r.inverse), rot: r))
+              scannerA.connections.add(Connection(target: scannerB, offset: a - b, rot: r.inverse))
               break inner
 
 ### WALK GRAPH OF OVERLAPPING SCANNERS ###
