@@ -1,6 +1,5 @@
 include prelude
 
-import algorithm
 import strscans
 import sugar
 
@@ -22,13 +21,6 @@ type
     offset: Coord
     rot: Rotation
 
-func `$`(c: Coord): string =
-  fmt"({c.x: },{c.y: },{c.z: })"
-
-func `$`(s: Scanner): string =
-  let matches = s.connections.mapIt(fmt"{it.target.num}: {it.offset} ({it.rot.orient};{it.rot.flip})").join(",")
-  fmt"[{s.num} {matches}]"
-
 func `+`(a, b: Coord): Coord =
   (a.x + b.x, a.y + b.y, a.z + b.z)
 
@@ -41,9 +33,6 @@ iterator offset(a: seq[Coord], b: Coord): Coord =
 
 func `+`(a: seq[Coord], b: Coord): seq[Coord] =
   a.mapIt(it + b)
-
-func `-`(a: seq[Coord], b: Coord): seq[Coord] =
-  a.mapIt(it - b)
 
 func d(a, b: Coord): int =
   abs(a.x - b.x) + abs(a.y - b.y) + abs(a.z - b.z)
@@ -67,9 +56,6 @@ proc inverse(by: Rotation): Rotation =
     else: raise new ValueError
   let invflip = [flip[invorient[0]], flip[invorient[1]], flip[invorient[2]]]
   (invorient, invflip)
-
-proc unrotate(a: Coord, by: Rotation): Coord =
-  a.rotate(by.inverse)
 
 proc rotate(s: seq[Coord], by: Rotation): seq[Coord] =
   s.mapIt(it.rotate(by))
@@ -133,39 +119,6 @@ scanners[^1].finish
 
 const threshold = 12
 
-# ### MATCH OBSERVATIONS ###
-# var
-#   known = @[0]
-#   unknown = (1..<scanners.len).toSeq.toHashSet
-# while unknown.len > 0:
-#   var foundA, foundB: int
-#   block search:
-#     for i in known:
-#       for j in unknown:
-#         let
-#           scannerA = scanners[i]
-#           scannerB = scanners[j]
-#         for a in scannerA.obs:
-#           for o, orientation in scannerB.orientations:
-#             for b in orientation[0..^threshold]:
-#               let offset = a - b
-#               var matches = 0
-#               for ab in orientation.offset(offset):
-#                 if ab in scannerA.obs:
-#                   inc matches
-#                 if matches >= threshold:
-#                   break
-#               # if card((scannerA.obs).toHashset * (orientation - offset).toHashset) >= 12:
-#               if matches >= threshold:
-#               # if card(scannerA.obsSet * (orientation + (a-b)).toHashset) >= 12:
-#                 scannerA.connections.add(Connection(target: scannerB, offset: a - b, rot: rotations[o].inverse))
-#                 foundA = i
-#                 foundB = j
-#                 break search
-#   known.add(foundB)
-#   unknown.excl(foundB)
-#   echo len known, ", ", card unknown
-
 ### MATCH OBSERVATIONS ###
 for i, scannerA in scanners:
   for j, scannerB in scanners[i+1..^1]:
@@ -179,9 +132,7 @@ for i, scannerA in scanners:
                 inc matches
               if matches >= threshold:
                 break
-            # if card((scannerA.obs).toHashset * (orientation - offset).toHashset) >= 12:
             if matches >= threshold:
-            # if card(scannerA.obsSet * (orientation + (a-b)).toHashset) >= 12:
               scannerB.connections.add(Connection(target: scannerA, offset: (b - a).rotate(rotations[o].inverse), rot: rotations[o]))
               scannerA.connections.add(Connection(target: scannerB, offset: a - b, rot: rotations[o].inverse))
               break inner
