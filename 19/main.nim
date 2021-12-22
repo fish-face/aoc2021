@@ -72,23 +72,37 @@ proc `*`(a, b: Rotation): Rotation =
     a.flip[b.orient[2]] * b.flip[2]
   ]
 
-let rotations = product([
-    [0, 1, 2],
-    [1, 2, 0],
-    [2, 0, 1],
-    [2, 1, 0],
-    [0, 2, 1],
-    [1, 0, 2],
-  ], [
-    [ 1,  1,  1],
-    [ 1,  1, -1],
-    [ 1, -1,  1],
-    [-1,  1,  1],
-    [ 1, -1, -1],
-    [-1, -1,  1],
-    [-1,  1, -1],
-    [-1, -1, -1],
-  ]).toSeq.mapIt((it[0], it[1]))
+let rotations = [
+  ([0, 1, 2], [ 1,  1,  1]),
+  ([0, 1, 2], [-1, -1,  1]),
+  ([0, 1, 2], [-1,  1, -1]),
+  ([0, 1, 2], [ 1, -1, -1]),
+
+  ([1, 2, 0], [ 1,  1,  1]),
+  ([1, 2, 0], [-1, -1,  1]),
+  ([1, 2, 0], [-1,  1, -1]),
+  ([1, 2, 0], [ 1, -1, -1]),
+
+  ([2, 0, 1], [ 1,  1,  1]),
+  ([2, 0, 1], [-1, -1,  1]),
+  ([2, 0, 1], [-1,  1, -1]),
+  ([2, 0, 1], [ 1, -1, -1]),
+
+  ([0, 2, 1], [ 1,  1, -1]),
+  ([0, 2, 1], [ 1, -1,  1]),
+  ([0, 2, 1], [-1,  1,  1]),
+  ([0, 2, 1], [-1, -1, -1]),
+
+  ([1, 0, 2], [ 1,  1, -1]),
+  ([1, 0, 2], [ 1, -1,  1]),
+  ([1, 0, 2], [-1,  1,  1]),
+  ([1, 0, 2], [-1, -1, -1]),
+
+  ([2, 1, 0], [ 1,  1, -1]),
+  ([2, 1, 0], [ 1, -1,  1]),
+  ([2, 1, 0], [-1,  1,  1]),
+  ([2, 1, 0], [-1, -1, -1]),
+]
 
 proc generateOrientations(s: Scanner) =
   for (orient, flip) in rotations:
@@ -118,21 +132,30 @@ for line in input:
 scanners[^1].finish
 
 const threshold = 12
+# every scanner with >=5 matches is a real match
+const practicalThreshold = 5
 
 ### MATCH OBSERVATIONS ###
 for i, scannerA in scanners:
-  for j, scannerB in scanners[i+1..^1]:
+  for scannerB in scanners[i+1..^1]:
     block inner:
       for a in scannerA.obs:
         for o, orientation in scannerB.orientations:
+          # every matching scanner has at least 12 matches, any one of which can be used as the point to
+          # generate the offset
           for b in orientation[0..^threshold]:
             var matches = 0
+            var j = 0
             for ab in orientation.offset(a - b):
+              # every matching scanner has at least 12 matches, so break if that's not possible with how
+              # many observations are left to check
+              if orientation.len - j - 1 < (threshold - matches): break
+              inc j
               if ab in scannerA.obs:
                 inc matches
-              if matches >= threshold:
+              if matches >= practicalThreshold:
                 break
-            if matches >= threshold:
+            if matches >= practicalThreshold:
               scannerB.connections.add(Connection(target: scannerA, offset: (b - a).rotate(rotations[o].inverse), rot: rotations[o]))
               scannerA.connections.add(Connection(target: scannerB, offset: a - b, rot: rotations[o].inverse))
               break inner
