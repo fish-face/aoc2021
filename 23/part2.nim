@@ -542,11 +542,11 @@ proc flatten[T](ll: seq[seq[T]]): seq[T] =
   for l in ll:
     result = result & l
 
-let distBetween = paths.pairs.toSeq.mapIt(
+let pathsBetween = paths.pairs.toSeq.mapIt(
   it[1].filter(
     p => p.len > 0
   ).map(
-    p => ((it[0], p[^1]), p.len)
+    p => ((it[0], p[^1]), p)
   )
 ).flatten.toTable
 
@@ -558,5 +558,5 @@ proc h*(s, r: State): int =
     for spos, socc in s:
       if socc != occ: continue
       if spos in room: continue
+      result += costs[occ] * (pathsBetween[(spos, room[0])].len + nWrong)
       inc nWrong
-      result += costs[occ] * (distBetween[(spos, room[0])] + nWrong)
