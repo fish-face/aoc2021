@@ -44,7 +44,8 @@ proc `$`(s: State): string =
 #   neighbourMap[p] = neighbours(c).mapIt(coord2pos[it])
 # # echo neighbourMap
 
-proc astar(start: State, goal: State, moves: (State) -> (seq[(int, State)])): int =
+
+proc astar(start: State, goal: State, moves: (State) -> (seq[(int, State)]), h: (State, State) -> (int)): int =
   var
     openSet = [(0, start)].toHeapQueue
     scoreMap = {start: 0}.toTable
@@ -65,9 +66,9 @@ proc astar(start: State, goal: State, moves: (State) -> (seq[(int, State)])): in
       if tentativeScore < scoreMap.getOrDefault(move, int.high):
         scoreMap[move] = tentativeScore
         # uncomment to use heuristic
-        # openSet.push(neighbour.withPriority(tentativeScore + d(neighbour, goal)))
         cameFrom[move] = current
-        openSet.push((tentativeScore, move))
+        openSet.push((tentativeScore + h(move, goal), move))
+        # openSet.push((tentativeScore, move))
 
 let input = paramStr(1).readFile.strip.splitLines
 var start: State
@@ -116,4 +117,4 @@ goal[c4] = C
 goal[d3] = D
 goal[d4] = D
 
-echo astar(start, goal, part2.moves)
+echo astar(start, goal, part2.moves, part2.h)

@@ -1,3 +1,6 @@
+import sugar
+import tables
+
 import common
 
 const paths*: array[Position, seq[seq[Position]]] = [
@@ -523,3 +526,18 @@ proc moves*(s: State): seq[(int, State)] =
         newstate[p] = EMPTY
         newstate[path[^1]] = occ
         result.add((costs[occ] * path.len, newstate))
+
+const distBetween = collect(initTable):
+  for start, path in paths:
+    if path.len > 0: {(start, path[^1]): path.len}
+
+proc h*(s, r: State): int =
+  # for spos, socc in s:
+  #   var cost = int.high
+  #   if socc == EMPTY: continue
+  #   for rpos, rocc in r:
+  #     if socc != rocc: continue
+  for rpos, rocc in r:
+    if rocc == EMPTY: continue
+    if s[rpos] != rocc:
+      result += costs[rocc]
