@@ -551,12 +551,30 @@ let pathsBetween = paths.pairs.toSeq.mapIt(
 ).flatten.toTable
 
 proc h*(s, r: State): int =
+  var roomCounts: array[A..D, array[A..D, int]] = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ]
   # for each amphipod, add 0 if it's in the correct room, otherwise the cost
   # to get to an unoccupied position in the correct room.
   for (occ, room) in [(A, aRoom), (B, bRoom), (C, cRoom), (D, dRoom)]:
     var nWrong = 0
     for spos, socc in s:
+      # search for amphipod belonging in room
       if socc != occ: continue
+      # is it already in the room?
       if spos in room: continue
       result += costs[occ] * (pathsBetween[(spos, room[0])].len + nWrong)
       inc nWrong
+    for rpos in room:
+      if s[rpos] == EMPTY: continue
+      inc roomCounts[occ][s[rpos]]
+  # For each amphipod that needs to *swap* with one in another room, at least one
+  # of them (pessimistically, the lower cost one) must move two additional steps
+  # to allow the other to get past.
+  for occ1, counts1 in roomCounts:
+    for idx, counts2 in roomCounts[occ1.succ..D]:
+      let occ2 = (idx + occ1.int + 1).Occupation
+      result += 2 * costs[occ1] * min(counts1[occ2.Occupation], counts2[occ1])

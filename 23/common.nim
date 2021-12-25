@@ -93,7 +93,7 @@ const repr: array[Occupation, char] = [
 # ...........
 #   . . . .
 #   . . . .
-proc `$`(s: State): string =
+proc `$`*(s: State): string =
   for y in 0..4:
     for x in 0..10:
         if coord2pos.hasKey((x, y)):
