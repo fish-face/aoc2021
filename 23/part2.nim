@@ -503,11 +503,30 @@ const paths*: array[Position, seq[seq[Position]]] = [
   ],
 ]
 
-const aRoom = [a1, a2, a3, a4]
-const bRoom = [b1, b2, b3, b4]
-const cRoom = [c1, c2, c3, c4]
-const dRoom = [d1, d2, d3, d4]
+const aRoom* = [a1, a2, a3, a4]
+const bRoom* = [b1, b2, b3, b4]
+const cRoom* = [c1, c2, c3, c4]
+const dRoom* = [d1, d2, d3, d4]
 const part2only* = [a3, a4, b3, b4, c3, c4, d3, d4]
+
+proc checkMove*(s: State, path: seq[Position], occ: Occupation): bool {.inline.}=
+  let final = path[^1]
+  for (chr, room) in [(A, aRoom), (B, bRoom), (C, cRoom), (D, dRoom)]:
+    # if the path ends up in this room
+    if final in room:
+      # ...and it's the wrong room
+      if occ != chr:
+        return false
+      let depth = room.find(final)
+      # ...and it's got wrong stuff in there
+      for deeper in room[depth+1..^1]:
+        if s[deeper] != chr:
+          return false
+  # if there is something blocking the way
+  for pp in path:
+    if s[pp] != EMPTY:
+      return false
+  return true
 
 proc moves*(s: State): seq[(int, State)] =
   for p, occ in s:
@@ -537,26 +556,3 @@ proc moves*(s: State): seq[(int, State)] =
         newstate[p] = EMPTY
         newstate[path[^1]] = occ
         result.add((costs[occ] * path.len, newstate))
-
-proc flatten[T](ll: seq[seq[T]]): seq[T] =
-  for l in ll:
-    result = result & l
-
-let distBetween = paths.pairs.toSeq.mapIt(
-  it[1].filter(
-    p => p.len > 0
-  ).map(
-    p => ((it[0], p[^1]), p.len)
-  )
-).flatten.toTable
-
-proc h*(s, r: State): int =
-  # for each amphipod, add 0 if it's in the correct room, otherwise the cost
-  # to get to an unoccupied position in the correct room.
-  for (occ, room) in [(A, aRoom), (B, bRoom), (C, cRoom), (D, dRoom)]:
-    var nWrong = 0
-    for spos, socc in s:
-      if socc != occ: continue
-      if spos in room: continue
-      inc nWrong
-      result += costs[occ] * (distBetween[(spos, room[0])] + nWrong)
