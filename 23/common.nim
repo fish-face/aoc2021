@@ -18,6 +18,9 @@ type
     a4, b4, c4, d4,
   State* = array[Position, Occupation]
 
+proc `<`*(a, b: (int, State)): bool =
+  a[0] < b[0]
+
 const costs*: array[Occupation, int] = [0, 1, 10, 100, 1000]
 const posmap*: array[Position, Coord] = [
   (0, 0),
@@ -78,4 +81,24 @@ const coord2pos* = {
   ( 6, 4): c4,
   ( 8, 4): d4,
 }.toTable
+
+const repr: array[Occupation, char] = [
+  '.',
+  'A',
+  'B',
+  'C',
+  'D'
+]
+
+# ...........
+#   . . . .
+#   . . . .
+proc `$`(s: State): string =
+  for y in 0..4:
+    for x in 0..10:
+        if coord2pos.hasKey((x, y)):
+          result = result & repr[s[coord2pos.getOrDefault((x, y))]]
+        else:
+          result = result & ' '
+    result = result & '\n'
 

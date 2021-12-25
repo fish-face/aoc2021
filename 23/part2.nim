@@ -1,8 +1,12 @@
+import sequtils
 import sugar
 import tables
 
 import common
 
+# Array of all valid paths from each starting position.
+# This encodes the notion of a valid sequence of moves from the task rules, e.g.
+# we never move from the corridor into the corridor.
 const paths*: array[Position, seq[seq[Position]]] = [
   # leftInner,
   @[
@@ -503,6 +507,7 @@ const aRoom = [a1, a2, a3, a4]
 const bRoom = [b1, b2, b3, b4]
 const cRoom = [c1, c2, c3, c4]
 const dRoom = [d1, d2, d3, d4]
+const part2only* = [a3, a4, b3, b4, c3, c4, d3, d4]
 
 proc moves*(s: State): seq[(int, State)] =
   for p, occ in s:
@@ -510,15 +515,21 @@ proc moves*(s: State): seq[(int, State)] =
       continue
     for path in paths[p]:
       let final = path[^1]
+      # this block culminates in yielding a cost and the associated valid move.
+      # we break this block whenever the move turns out to be invalid.
       block check:
         for (chr, room) in [(A, aRoom), (B, bRoom), (C, cRoom), (D, dRoom)]:
-          if final in aRoom:
+          # if the path ends up in this room
+          if final in room:
+            # ...and it's the wrong room
             if occ != chr:
               break check
             let depth = room.find(final)
+            # ...and it's got wrong stuff in there
             for deeper in room[depth+1..^1]:
               if s[deeper] != chr:
                 break check
+        # if there is something blocking the way
         for pp in path:
           if s[pp] != EMPTY:
             break check
@@ -527,17 +538,25 @@ proc moves*(s: State): seq[(int, State)] =
         newstate[path[^1]] = occ
         result.add((costs[occ] * path.len, newstate))
 
-const distBetween = collect(initTable):
-  for start, path in paths:
-    if path.len > 0: {(start, path[^1]): path.len}
+proc flatten[T](ll: seq[seq[T]]): seq[T] =
+  for l in ll:
+    result = result & l
+
+let distBetween = paths.pairs.toSeq.mapIt(
+  it[1].filter(
+    p => p.len > 0
+  ).map(
+    p => ((it[0], p[^1]), p.len)
+  )
+).flatten.toTable
 
 proc h*(s, r: State): int =
-  # for spos, socc in s:
-  #   var cost = int.high
-  #   if socc == EMPTY: continue
-  #   for rpos, rocc in r:
-  #     if socc != rocc: continue
-  for rpos, rocc in r:
-    if rocc == EMPTY: continue
-    if s[rpos] != rocc:
-      result += costs[rocc]
+  # for each amphipod, add 0 if it's in the correct room, otherwise the cost
+  # to get to an unoccupied position in the correct room.
+  for (occ, room) in [(A, aRoom), (B, bRoom), (C, cRoom), (D, dRoom)]:
+    var nWrong = 0
+    for spos, socc in s:
+      if socc != occ: continue
+      if spos in room: continue
+      inc nWrong
+      result += costs[occ] * (distBetween[(spos, room[0])] + nWrong)
