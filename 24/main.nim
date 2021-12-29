@@ -2,11 +2,28 @@ include prelude
 
 import sugar
 
+# inp w
+# mul x 0
+# add x z
+# mod x 26
+# div z **A**
+# add x **B**
+# eql x w
+# eql x 0
+# mul y 0
+# add y 25
+# mul y x
+# add y 1
+# mul z y
+# mul y 0
+# add y w
+# add y **C**
+# mul y x
+# add z y
+
 type
   Consts = tuple
     A, B, C: int
-  Input = tuple
-    w, z: int
 
 proc parseBlock(blk: string): Consts =
   let tokens = blk.splitWhitespace()
@@ -14,104 +31,43 @@ proc parseBlock(blk: string): Consts =
 
 let input = paramStr(1).readFile.strip.split("inp w\n")[1..^1].map(parseBlock)
 
-proc reverseBlock(consts: Consts, zout: int): seq[Input] =
-  ## Find pairs of w (input digit) and z (input from previous block)
-  ## which produce the supplied value of z as output at the given
-  ## block.
-  ## This is done by "solving" the function that each block specifies.
-  # PART 1: suppose the block sets x to 1
-  for w in 1..9:
-    let
-      i = 26 * zout + w - consts.B - zout*consts.A
-      zCandidate = zout*consts.A + i
-    if zCandidate div consts.A == zout and zCandidate mod 26 + consts.B == w:
-      result.add((w, zCandidate))
-  # PART 2: suppose x gets set to 0 and we're dividing by 26
-  if consts.A == 26:
-    for w in 1..9:
-      let zstart = zout - (w + consts.C)
-      if zstart mod 26 != 0:
-        continue
-      # Account for behaviour of rounding towards zero rather than down/up
-      var range: HSlice[int, int]
-      if zstart < 0:
-        range = zstart-25..zstart
-      elif zstart == 0:
-        range = zstart-25..zstart+25
-      elif zstart > 0:
-        range = zstart..zstart+25
-      for zCandidate in range:
-        if zCandidate mod 26 + consts.B != w:
-          result.add((w, zCandidate))
-  # PART 3: suppose x gets set to 0 and we're not dividing by 26
-  elif consts.A == 1:
-    for w in 1..9:
-      let zin_times_26 = -w + zout - consts.C
-      if zin_times_26 mod 26 == 0 and (zin_times_26 div 26) mod 26 + consts.B != w:
-        result.add((w, zin_times_26 div 26))
+## Explanation ##
+# The input ALU program effectively maintains a stack in z of integers between 0 and 25, and pushes/pops this
+# by multiplying/dividing z by 26 (and adding/taking the remainder).
+# This is done once per 18 instruction "block" of the input.
+# The value pushed onto the stack is the sum of the input digit in that block and the parameter I call C.
+# For the program to terminate with the output zero, every opportunity for popping from stack *must* be taken,
+# because otherwise z will be multiplied by 26 more times than it is divided by 26. Those opportunities are
+# when parameter A is 26, since z is divided by A. So in each block where A is 26, we *must* pop, which means
+# the test on z modulo 26 *must* be true. This amounts to comparing the value popped off the stack, which is the
+# input digit from the earlier block plus C from that block, with the input digit plus B.
+# In other words, whenever A is 26 we establish a relationship between that block and an earlier one where:
+#   d1 = d2 + C1 + B2
 
+var stack: seq[(int, int)]
+var pairs: Table[int, (int, int)]
+for blk, consts in input:
+  if consts.A == 1:  # push
+    stack.add((blk, consts.C))
+  else:  # we want to pop
+    # whatever is at the top of the stack tells us firstly which earlier digit this one is related to, and
+    # secondly the difference that has to exist between the two digits (the sum of the C constant of the
+    # earlier block and the B of the current block)
+    let (partnerBlk, partnerC) = stack.pop
+    pairs[partnerBlk] = (blk, partnerC + consts.B)
 
-# block number --> w --> (zin, zout)
-type ValidityMap = seq[Table[int, seq[(int, int)]]]
+var high, low: array[14, int]
+for i, (j, diff) in pairs:
+  if diff <= 0:
+    high[i] = 9
+    high[j] = 9 + diff
+    low[i] = 1 - diff
+    low[j] = 1
+  else:
+    high[i] = 9 - diff
+    high[j] = 9
+    low[i] = 1
+    low[j] = 1 + diff
 
-proc mapValid(): ValidityMap =
-  ## Produce a map of inputs to blocks which are capable of resulting in a valid result
-  ## Do this by starting with the known desired output (z=0) and reversing each
-  ## block in reverse order. That gives a new set of valid z inputs to the final stage
-  ## (along with their associated digit inputs). Repeat until the beginning is reached.
-  ## Following a path (in forwards order) through this map will always result in an output
-  ## of z=0.
-  var target_zs = @[0]
-  for blk in 0..<input.len:
-    result.add(Table[int, seq[(int, int)]]())
-
-  for blk in countdown(input.len-1, 0):
-    var next_target_zs: seq[int]
-    for target_z in target_zs:
-      for candidate in reverseBlock(input[blk], target_z):
-        # TODO why doesn't seq[(int, int)]() work here??
-        result[blk].mGetOrPut(
-          candidate.w, newSeq[(int, int)]()
-        ).add((candidate.z, target_z))
-        next_target_zs.add(candidate.z)
-    # The same z value may be produced many times: cut down to the unique ones
-    target_zs = next_target_zs.toHashSet.toSeq
-
-proc solve(valid: ValidityMap, highest: bool): string =
-  ## Follow the given map of valid inputs, filtering at each stage to produce a valid
-  ## output. Keep track of the largest or smallest input digit that can be used at each
-  ## stage, and output the resulting concatenated number at the end.
-  iterator countForTask(): int =
-    if highest:
-      for digit in countdown(9, 1):
-        yield digit
-    else:
-      for digit in 1..9:
-        yield digit
-  var
-    digits: seq[int]
-    valid_zs = @[0]
-
-  for blk, program in input:
-    var
-      best: int
-    block search:
-      for digit in countForTask():
-        for (z_in, z_out) in valid[blk].getOrDefault(digit, newSeq[(int, int)]()):
-          if z_in in valid_zs:
-            best = digit
-            digits.add(digit)
-            break search
-      echo "failed"
-      echo digits
-      quit()
-    if blk + 1 < input.len:
-      valid_zs = collect:
-        for (zin, zout) in valid[blk][best]:
-          if zin in valid_zs: zout
-
-  return digits.join("")
-
-let valid = mapValid()
-echo solve(valid, true)
-echo solve(valid, false)
+echo high.join("")
+echo low.join("")

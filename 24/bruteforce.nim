@@ -2,6 +2,7 @@
 # extracting types and globals!
 
 import algorithm
+import math
 
 let rawinput = paramStr(1).readFile.strip.splitLines
 
