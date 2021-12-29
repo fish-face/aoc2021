@@ -97,7 +97,7 @@ proc countOn(rects: seq[Rect]): int =
   allIntersections(rects, true).map(vol).sum
 
 proc isPartOne(r: Rect): bool =
-  r.x1 >= -50 and r.y1 >= -50 and r.z1 >= -50 and r.x2 <= 50 and r.y2 <= 50 and r.z2 <= 50
+  (r.x1 >= -50 and r.x2 <= 50) or (r.y2 <= 50 and r.y1 >= -50) or (r.z1 >= -50 and r.z2 <= 50)
 
 let partOne = countOn(input.filter(isPartOne))
 echo partOne
