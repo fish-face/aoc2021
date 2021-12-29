@@ -2,12 +2,15 @@ include prelude
 
 import math
 import strscans
+import algorithm
 
 type
   Rect = tuple
     x1, y1, z1, x2, y2, z2: int
     sgn: int
+    id: HashSet[int]
 
+var rectId = 0
 proc fromString(line: string): Rect =
   var sgn: int
   let (success, onoroff, x1, x2, y1, y2, z1, z2) = line.scanTuple("$w x=$i..$i,y=$i..$i,z=$i..$i")
@@ -17,19 +20,28 @@ proc fromString(line: string): Rect =
     sgn = -1
   else:
     raise new ValueError
-  (x1, y1, z1, x2+1, y2+1, z2+1, sgn)
+  inc rectId
+  (x1, y1, z1, x2+1, y2+1, z2+1, sgn, [rectId].toHashSet)
 
 proc `-`(r: Rect): Rect =
   # Invert the sign of r
   result = r
   result.sgn = -result.sgn
+  # result.id = fmt"-{r.id}"
+
+proc `$`(r: Rect): string =
+  if r.sgn == 1:
+    "+" & r.id.toSeq.sorted.join("*")
+  else:
+    "-" & r.id.toSeq.sorted.join("*")
 
 proc `*`(a, b: Rect): Rect =
   # Intersection of a and b, with positive sign. May result in an everted rect.
   (
     max(a.x1, b.x1), max(a.y1, b.y1), max(a.z1, b.z1),
     min(a.x2, b.x2), min(a.y2, b.y2), min(a.z2, b.z2),
-    1
+    1,
+    a.id + b.id
   )
 
 proc `*`(r: Rect, rr: seq[Rect]): seq[Rect] =
@@ -81,6 +93,7 @@ proc countOn(rects: seq[Rect]): int =
   proc vol(r: Rect): int =
     (r.x2 - r.x1) * (r.y2 - r.y1) * (r.z2 - r.z1) * r.sgn
 
+  echo allIntersections(rects, true).join("\n")
   allIntersections(rects, true).map(vol).sum
 
 proc isPartOne(r: Rect): bool =
