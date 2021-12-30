@@ -20,7 +20,7 @@ let input = paramStr(1).readFile.strip.splitLines
 
 proc toAddr(m: auto, c: Coord, w, h: int, curBorder: int, borderVal: uint8): uint =
   var shift = 8
-  for (x, y) in [
+  for (sx, sy) in [
     (-1,-1),
     ( 0,-1),
     ( 1,-1),
@@ -30,7 +30,10 @@ proc toAddr(m: auto, c: Coord, w, h: int, curBorder: int, borderVal: uint8): uin
     (-1, 1),
     ( 0, 1),
     ( 1, 1),
-  ].mapIt((it[0] + c.x, it[1] + c.y)):
+  ]:
+    let
+      x = sx + c.x
+      y = sy + c.y
     if x < curBorder or y < curBorder or x >= w+2 * iters-curBorder or y >= h+2*iters-curBorder:
       result += borderVal.uint shl shift
     else:
